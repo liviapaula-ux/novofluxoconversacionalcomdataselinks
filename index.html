@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jornada de Parentalidade iFood | Executive Flow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #FDFDFD;
+            scroll-behavior: smooth;
+        }
+
+        .flow-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        .flow-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #E5E7EB;
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+
+        .node-card {
+            position: relative;
+            z-index: 10;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            border: 1px solid rgba(0,0,0,0.05);
+            width: 100%;
+        }
+
+        .node-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1);
+        }
+
+        .phase-acolher { border-left: 5px solid #FBBF24; }
+        .phase-planejar { border-left: 5px solid #F97316; }
+        .phase-cuidar { border-left: 5px solid #3B82F6; }
+        .phase-sustentar { border-left: 5px solid #10B981; }
+
+        .gift-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: #EA1D2C; }
+            100% { transform: scale(1); }
+        }
+
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body x-data="{ 
+    modalOpen: false, 
+    modalTitle: '', 
+    modalBody: '',
+    openMsg(title, body) {
+        this.modalTitle = title;
+        this.modalBody = body;
+        this.modalOpen = true;
+    }
+}">
+
+    <header class="bg-white border-b border-gray-100 py-10 text-center mb-16">
+        <div class="mb-4 flex justify-center">
+            <img src="https://logodownload.org/wp-content/uploads/2017/05/ifood-logo-0.png" alt="iFood" class="h-6">
+        </div>
+        <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">Fluxograma de Parentalidade</h1>
+        <p class="text-gray-500 mt-2 font-light tracking-tight">Cronogramas e gatilhos de comunicação atualizados com links de acesso.</p>
+    </header>
+
+    <div class="flow-container pb-20">
+        <div class="flow-line"></div>
+
+        <!-- TEMPO DE ACOLHER -->
+        <section class="mb-24">
+            <div class="flex items-center justify-center mb-10">
+                <span class="bg-amber-100 text-amber-700 px-6 py-2 rounded-full font-bold uppercase tracking-widest text-xs border border-amber-200 shadow-sm z-10">Tempo de Acolher</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-10 relative">
+                
+                <div class="flex justify-end">
+                    <div class="node-card phase-acolher p-5 rounded-2xl w-full md:w-80">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[10px] font-extrabold text-amber-600 uppercase italic">Ato da Inscrição</span>
+                        </div>
+                        <h3 class="font-bold text-gray-800">Inscrição no Programa</h3>
+                        <p class="text-[11px] text-gray-500 mt-2">Recebe mensagem com link do site no ato da inscrição.</p>
+                        <a href="https://liviapaula-ux.github.io/Portal-Ifamily/" target="_blank" class="mt-4 block bg-amber-500 text-white text-[10px] py-2 rounded-lg text-center font-bold uppercase">Acessar Site iFamily</a>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="node-card phase-acolher p-5 rounded-2xl w-full md:w-80 shadow-sm border-2 border-amber-50">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-[10px] font-extrabold text-amber-600 uppercase italic">Combo de Mensagens</span>
+                            <i class="fa-solid fa-gift gift-pulse text-red-500"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800">Mensagens de Inscrição</h3>
+                        <p class="text-[10px] text-gray-400">Gatilhos ativados no ato da inscrição com todos os links.</p>
+                        <button @click="openMsg('Pack de Mensagens: Inscrição', '<strong>Mapeamento de Saúde:</strong> Olá! É fundamental conhecermos mais sobre você/gestante para garantir o suporte ideal. Para isso, pedimos que preencha este formulário de acompanhamento: <a href=\'https://script.google.com/a/macros/ifood.com.br/s/AKfycbyUv3TwLCjOHfQWONTp9Bit6_tcLe9M2xZo4Wvb6JN5bJm82KyauZpy8V_bJokjCL4-vg/exec\' target=\'_blank\' class=\'text-red-500 font-bold underline\'>Acesse aqui</a>.<br><br><strong>Acolhimento Social:</strong> Em até 30 dias nossa assistente social entrará em contato com um repertório incrível de acolhimento e possibilidades do programa!<br><br><strong>Isenção Copay:</strong> Você sabia que a gestante tem direito a isenção dos descontos de coparticipação? Garanta seu direito preenchendo o fluxo o mais rápido possível: <a href=\'https://survey.lockton.com.br/surveyanswer/4SFXFtjvLSXLDjffbOtKB3uMkhw8e4I9?culture=pt-BR\' target=\'_blank\' class=\'text-red-500 font-bold underline\'>Formulário de Isenção</a>.<br><br><strong>Mentoria:</strong> Sua jornada de mentoria começa agora. Agende sua primeira sessão para alinharmos expectativas!')" class="mt-4 bg-gray-900 text-white text-[10px] px-3 py-2 rounded-lg font-bold w-full">
+                            <i class="fa-solid fa-layer-group mr-1"></i> VER MENSAGENS POR TEMA
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-span-full flex flex-col items-center gap-4 mt-6">
+                    <div class="node-card phase-acolher p-5 rounded-2xl w-full md:w-96 shadow-md">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-[9px] font-bold italic">INSCRIÇÃO + 5 DIAS</span>
+                            <i class="fa-solid fa-briefcase text-gray-300"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800 text-center">Envolvimento da Liderança</h3>
+                        <p class="text-xs text-center text-gray-500 mt-2">O líder recebe as orientações para o acolhimento.</p>
+                        <button @click="openMsg('Mensagem ao Líder', 'Caro Líder, um membro do seu time acaba de se inscrever no Programa de Parentalidade iFood. Este é um momento único! Preparamos orientações para que você possa acolher e apoiar o FoodLover da melhor forma possível. #GenteVemPrimeiro')" class="mt-4 border border-amber-500 text-amber-600 text-[10px] py-2 rounded-lg w-full font-bold">VER MENSAGEM DO LÍDER</button>
+                    </div>
+                    <div class="bg-gray-100 px-4 py-2 rounded-full text-[10px] font-bold text-gray-400 italic">Companheiros: Trilha para Pais disponível no ato da inscrição</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEMPO DE PLANEJAR -->
+        <section class="mb-24">
+            <div class="flex items-center justify-center mb-10">
+                <span class="bg-orange-100 text-orange-700 px-6 py-2 rounded-full font-bold uppercase tracking-widest text-xs border border-orange-200 shadow-sm z-10">Tempo de Planejar</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-10">
+                
+                <div class="flex justify-end">
+                    <div class="node-card phase-planejar p-5 rounded-2xl w-full md:w-80 shadow-md">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-[9px] font-extrabold text-orange-600 uppercase italic">Fim do 1º Trimestre</span>
+                            <i class="fa-solid fa-gift gift-pulse text-red-500"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800 italic">Gatilho: Kit Mamãe</h3>
+                        <p class="text-[11px] text-gray-500 mt-2">Mensagem enviada ao concluir as etapas de acolhimento.</p>
+                        <button @click="openMsg('Entrega Kit Mamãe', 'Parabéns! Você concluiu a primeira fase. Estamos enviando o seu Kit Mamãe! Segue o seu código de rastreio: [CÓDIGO]. Esperamos que aproveite este mimo!')" class="mt-4 bg-orange-500 text-white text-[10px] py-2 rounded-lg font-bold w-full">VER RASTREIO / MENSAGEM</button>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="node-card phase-planejar p-5 rounded-2xl w-full md:w-80">
+                        <span class="text-[9px] font-extrabold text-orange-600 uppercase italic">12ª a 15ª Semana</span>
+                        <h3 class="font-bold text-gray-800">Próximos Passos</h3>
+                        <ul class="text-[10px] mt-3 space-y-2 text-gray-600 italic">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-orange-400"></i> Sessão de Mentoria</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-orange-400"></i> Novo Mapeamento de Saúde</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-orange-400"></i> Roda de conversa para pais</li>
+                        </ul>
+                        <button @click="openMsg('Convite: Planejamento', 'FoodLover, agora entramos no Tempo de Planejar. Convidamos você a preencher o novo mapeamento de saúde (<a href=\'https://script.google.com/a/macros/ifood.com.br/s/AKfycbw4Tu4pEvsSn3eP4EIwOVbLPjEGl_HHltZDeFsYnfmoWsnVMKyrSAWa4jPjkDdlti-r/exec\' target=\'_blank\' class=\'font-bold underline\'>Acesse aqui</a>) e participar das rodas de conversa. Esses momentos são fundamentais para o suporte desta fase!')" class="mt-4 text-orange-600 text-[10px] font-bold italic underline">LER CONVITE GERAL</button>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <div class="node-card phase-planejar p-5 rounded-2xl w-full md:w-80">
+                        <span class="text-[9px] font-extrabold text-orange-600 uppercase italic">15ª Semana</span>
+                        <h3 class="font-bold text-gray-800">Playbook para Pais</h3>
+                        <button @click="openMsg('Convite Playbook', 'Hora de mergulhar no conhecimento! Sua 15ª semana chegou e com ela o Playbook exclusivo iFood. Criamos este guia para que você consuma as melhores práticas de preparação para a licença.')" class="mt-3 bg-orange-100 text-orange-700 text-[10px] py-2 rounded-lg font-bold w-full">VER MENSAGEM</button>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="node-card phase-planejar p-5 rounded-2xl w-full md:w-80 border-dashed border-gray-200">
+                        <span class="text-[9px] font-extrabold text-gray-400 uppercase italic">20ª Semana</span>
+                        <h3 class="font-bold text-gray-700 italic">Letramento Liderança</h3>
+                        <button @click="openMsg('Mensagem Liderança 20S', 'Líder, seu FoodLover está na 20ª semana! Convidamos você a consumir o conteúdo de letramento para preparar a saída para licença com foco em segurança psicológica e planejamento operacional.')" class="mt-3 border border-gray-300 text-gray-400 text-[10px] py-2 rounded-lg font-bold w-full">MENSAGEM AO LÍDER</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEMPO DE CUIDAR -->
+        <section class="mb-24">
+            <div class="flex items-center justify-center mb-10">
+                <span class="bg-blue-100 text-blue-700 px-6 py-2 rounded-full font-bold uppercase tracking-widest text-xs border border-blue-200 shadow-sm z-10">Tempo de Cuidar</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-10">
+                
+                <div class="col-span-full flex justify-center mb-6 italic">
+                    <div class="bg-blue-600 text-white px-8 py-3 rounded-2xl shadow-lg flex items-center gap-4">
+                        <i class="fa-solid fa-star text-yellow-300"></i>
+                        <span class="text-sm font-bold uppercase tracking-widest italic">Gatilho Principal: DPP (Data Prevista do Parto)</span>
+                    </div>
+                </div>
+
+                <div class="flex justify-end italic">
+                    <div class="node-card phase-cuidar p-5 rounded-2xl w-full md:w-80 shadow-md">
+                        <span class="text-[9px] font-extrabold text-blue-600 uppercase italic">Na DPP</span>
+                        <h3 class="font-bold text-gray-800">Combo Nascimento</h3>
+                        <div class="mt-4 space-y-2 italic">
+                            <button @click="openMsg('Ações de Nascimento', 'Parabéns pela chegada do bebê! Agora é o momento de agir no <a href=\'https://beneflex.rh.digital/sign-in\' target=\'_blank\' class=\'font-bold underline\'>Portal de Benefícios</a> para a inclusão no plano de saúde. Também pedimos que preencha o formulário de saúde do bebê (<a href=\'https://script.google.com/a/macros/ifood.com.br/s/AKfycbyI5MewH11qGAWd9kWKoD4gfBjcmn_oxFkb9csixVO3go2eYbEluY_1Qk1BaxxlhwXghQ/exec\' target=\'_blank\' class=\'font-bold underline\'>Acesse aqui</a>), garantindo a isenção de copay até os 2 anos.')" class="bg-blue-100 text-blue-700 text-[10px] p-2 rounded-lg w-full font-bold">MENSAGEM: SAÚDE & PLANO</button>
+                            <button @click="openMsg('Licença Paternidade', 'Papai, o bebê chegou! Convidamos você a realizar o agendamento da sua licença paternidade através do fluxo da Alli no ato do nascimento para garantir seu tempo com a família.')" class="bg-blue-100 text-blue-700 text-[10px] p-2 rounded-lg w-full font-bold italic">MENSAGEM: LICENÇA PAIS</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="node-card phase-cuidar p-5 rounded-2xl w-full md:w-80 border-dashed border-blue-200 italic">
+                        <span class="text-[9px] font-extrabold text-gray-400 uppercase italic">Período de Licença</span>
+                        <h3 class="font-bold text-gray-700">+1 ou 2 Mentorias</h3>
+                        <p class="text-[10px] text-gray-500 mt-2 italic">Opcionais para suporte no puerpério.</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <div class="node-card phase-cuidar p-5 rounded-2xl w-full md:w-80">
+                        <span class="text-[9px] font-extrabold text-blue-600 uppercase italic">DPP + 150 DIAS</span>
+                        <h3 class="font-bold text-gray-800 italic">Ação do Líder</h3>
+                        <button @click="openMsg('Reonboarding Líder', 'Líder, o retorno do seu FoodLover está próximo (em 30 dias). Convidamos você a iniciar o planejamento do reonboarding para garantir um acolhimento impecável no retorno.')" class="mt-3 bg-gray-900 text-white text-[10px] py-2 rounded-lg font-bold w-full">MENSAGEM AO LÍDER</button>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="node-card phase-cuidar p-5 rounded-2xl w-full md:w-80 bg-blue-50">
+                        <span class="text-[9px] font-extrabold text-blue-600 uppercase italic">DPP + 180 DIAS</span>
+                        <h3 class="font-bold text-gray-900">Acolhimento de Retorno</h3>
+                        <button @click="openMsg('Boas-vindas de Retorno', 'Bem-vinda de volta, FoodLover! Esperamos que esse tempo tenha sido precioso. Estamos felizes com seu retorno e prontos para te acolher nessa nova fase de conciliação entre carreira e família.')" class="mt-3 border border-blue-500 text-blue-600 text-[10px] py-2 rounded-lg font-bold w-full">MENSAGEM ACOLHEDORA</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEMPO DE SUSTENTAR -->
+        <section class="mb-24">
+            <div class="flex items-center justify-center mb-10">
+                <span class="bg-emerald-100 text-emerald-700 px-6 py-2 rounded-full font-bold uppercase tracking-widest text-xs border border-emerald-200 shadow-sm z-10">Tempo de Sustentar</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-10">
+                
+                <div class="flex justify-end">
+                    <div class="node-card phase-sustentar p-5 rounded-2xl w-full md:w-80 shadow-sm">
+                        <span class="text-[9px] font-extrabold text-emerald-600 uppercase italic">Retorno + 5 Dias</span>
+                        <h3 class="font-bold text-gray-800">Saúde Pais e Gestantes</h3>
+                        <button @click="openMsg('Saúde Pós-Retorno', 'Olá! Como foram os primeiros dias de volta? Convidamos você a preencher este mapeamento de saúde para que possamos entender sua adaptação. <strong>Pais:</strong> <a href=\'https://script.google.com/a/macros/ifood.com.br/s/AKfycbxmIXmln1NDFRQ3Q50RoidE7y69XZyONMIoWp27QkESfjoVOF_G6VB76He3qZxiplZ0/exec\' target=\'_blank\' class=\'font-bold underline\'>Formulário Pais</a>. <strong>Gestantes:</strong> <a href=\'https://script.google.com/a/macros/ifood.com.br/s/AKfycbxcSFmY-dT511j9kSEIlj9dK4mWO3u8X4jk7FlVTanY6xW8Mx5AhANvtWQqqISI3qPT/exec\' target=\'_blank\' class=\'font-bold underline\'>Formulário Gestantes</a>.')" class="mt-3 bg-emerald-600 text-white text-[10px] py-2 rounded-lg font-bold w-full italic">LINKS MENSAGEM</button>
+                    </div>
+                </div>
+
+                <div class="flex justify-start italic">
+                    <div class="node-card phase-sustentar p-5 rounded-2xl w-full md:w-80">
+                        <span class="text-[9px] font-extrabold text-emerald-600 uppercase italic">Retorno + 10 Dias</span>
+                        <h3 class="font-bold text-gray-800 italic">Sessões Finais</h3>
+                        <button @click="openMsg('Mentoria de Encerramento', 'Nossa trilha oficial está chegando ao fim. Convidamos você para as sessões finais de mentoria para amarrar este ciclo incrível e celebrar sua jornada como pai/mãe iFood.')" class="mt-3 border border-emerald-500 text-emerald-600 text-[10px] py-2 rounded-lg font-bold w-full">AGENDAR SESSÕES</button>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <div class="node-card phase-sustentar p-5 rounded-2xl w-full md:w-80">
+                        <span class="text-[9px] font-extrabold text-emerald-600 uppercase italic">Retorno + 120 Dias</span>
+                        <h3 class="font-bold text-gray-800 italic">Acolhimento Social</h3>
+                        <button @click="openMsg('Check-in Social', 'Olá! Faz tempo que você voltou e queríamos saber como está o equilíbrio família/iFood. Nossa assistente social envia esta mensagem acolhedora para marcar o encerramento do acompanhamento dedicado.')" class="mt-3 bg-emerald-100 text-emerald-700 text-[10px] py-2 rounded-lg font-bold w-full">MENSAGEM ACOLHEDORA</button>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="node-card phase-sustentar p-5 rounded-2xl w-full md:w-80 bg-zinc-900 border-zinc-700 text-white">
+                        <span class="text-[9px] font-extrabold text-emerald-400 uppercase italic">Retorno + 180 Dias</span>
+                        <h3 class="font-bold mt-1">Despedida do Programa</h3>
+                        <button @click="openMsg('Resumo & Despedida', 'Uau! Que jornada vivemos juntos. De lá da inscrição até hoje, 6 meses após o retorno, você construiu um novo futuro. Parabéns por concluir o programa com sucesso! Foi um privilégio estar ao seu lado.')" class="mt-4 bg-emerald-600 text-white text-[10px] py-2 rounded-lg font-bold w-full">MENSAGEM DE DESPEDIDA</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- MODAL DE MENSAGENS -->
+    <div x-show="modalOpen" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div @click="modalOpen = false" x-show="modalOpen" x-transition.opacity class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div x-show="modalOpen" x-transition.scale.90 class="bg-white rounded-[2.5rem] p-8 md:p-12 w-full max-w-lg shadow-2xl relative z-20">
+            <button @click="modalOpen = false" class="absolute top-8 right-8 text-gray-300 hover:text-gray-500 transition">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+            <div class="mb-8">
+                <div class="w-12 h-1 bg-red-500 rounded-full mb-6"></div>
+                <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight" x-html="modalTitle"></h2>
+            </div>
+            <div class="text-gray-600 leading-relaxed text-sm" x-html="modalBody"></div>
+            <div class="mt-10 flex justify-end">
+                <button @click="modalOpen = false" class="bg-gray-900 text-white px-8 py-3 rounded-full font-bold text-[10px] uppercase tracking-widest hover:bg-red-600 transition">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-white border-t border-gray-100 py-16 text-center">
+        <p class="text-xs font-bold text-gray-400 tracking-[0.3em] uppercase mb-4">#GenteVemPrimeiro</p>
+        <div class="flex justify-center gap-8 text-gray-300">
+            <i class="fa-solid fa-heart hover:text-red-500 transition cursor-help"></i>
+            <i class="fa-solid fa-baby hover:text-blue-400 transition cursor-help"></i>
+            <i class="fa-solid fa-house-chimney hover:text-emerald-400 transition cursor-help"></i>
+        </div>
+    </footer>
+
+</body>
+</html>

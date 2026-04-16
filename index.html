@@ -1,469 +1,317 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pai Presente: A Jornada iFood de Cuidado</title>
+    <title>Jornada de Parentalidade iFood | Executive Flow</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-        
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Outfit', sans-serif;
+            background-color: #FDFDFD;
             scroll-behavior: smooth;
         }
 
-        .ifood-red { color: #ea1d2c; }
-        .bg-ifood-red { background-color: #ea1d2c; }
-        .border-ifood-red { border-color: #ea1d2c; }
-
-        .gradient-bg {
-            background: linear-gradient(135deg, #ea1d2c 0%, #a8141d 100%);
+        .flow-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            padding-left: 2rem;
+            padding-right: 2rem;
         }
 
-        .card-hover:hover {
-            transform: translateY(-8px);
-            transition: all 0.3s ease;
+        .flow-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #E5E7EB;
+            transform: translateX(-50%);
+            z-index: 0;
         }
 
-        .progress-bar {
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        .node-card {
+            position: relative;
+            z-index: 10;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            border: 1px solid rgba(0,0,0,0.05);
+            width: 100%;
         }
 
-        .quiz-option.selected {
-            border-color: #ea1d2c;
-            background-color: #fff1f2;
+        .node-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1);
         }
 
-        /* Esconder seções inicialmente para o fluxo do curso */
-        .hidden-section { display: none; }
-        
-        .illustration-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f8f8f8;
-            border-radius: 2rem;
-            padding: 2rem;
-            border: 2px solid #eee;
+        /* Novas Cores de Borda das Fases */
+        .phase-acolher { border-left: 5px solid #BE185D; } /* Rosa Fechado */
+        .phase-planejar { border-left: 5px solid #EF4444; } /* Vermelho Vivo */
+        .phase-cuidar { border-left: 5px solid #7F1D1D; } /* Vermelho Vinho */
+        .phase-sustentar { border-left: 5px solid #9A3412; } /* Vermelho Acobreado */
+
+        .gift-pulse {
+            animation: pulse 2s infinite;
         }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: #EA1D2C; }
+            100% { transform: scale(1); }
+        }
+
+        [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="bg-gray-50 text-slate-900">
+<body x-data="{ 
+    modalOpen: false, 
+    modalTitle: '', 
+    modalBody: '',
+    openMsg(title, body) {
+        this.modalTitle = title;
+        this.modalBody = body;
+        this.modalOpen = true;
+    }
+}">
 
-    <!-- Navegação -->
-    <nav class="sticky top-0 z-50 bg-white shadow-sm p-4">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <h1 class="text-2xl font-extrabold text-[#ea1d2c] flex items-center italic">
-                iFood <span class="text-slate-800 ml-2 not-italic font-bold">Pai Presente</span>
-            </h1>
-            <div class="w-full md:w-1/2">
-                <div class="flex justify-between text-xs mb-1 font-bold text-slate-400 uppercase tracking-widest">
-                    <span>Seu Progresso</span>
-                    <span id="progress-text">0%</span>
-                </div>
-                <div class="bg-gray-200 rounded-full h-2">
-                    <div id="main-progress" class="bg-[#ea1d2c] h-2 rounded-full progress-bar" style="width: 0%"></div>
-                </div>
-            </div>
+    <header class="bg-white border-b border-gray-100 py-10 text-center mb-16">
+        <div class="mb-4 flex justify-center">
+            <img src="https://logodownload.org/wp-content/uploads/2017/05/ifood-logo-0.png" alt="iFood" class="h-6">
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="gradient-bg text-white py-20 px-6 text-center">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight">A Entrega Mais Importante da Sua Vida! 🥡👶</h2>
-            <p class="text-xl mb-10 opacity-90 leading-relaxed font-medium">
-                Ser pai presente é estar no comando da jornada. <br>
-                Um guia prático para os FoodLovers que estão vivendo a melhor experiência de suas vidas.
-            </p>
-            <a href="#intro" class="bg-white text-[#ea1d2c] px-10 py-4 rounded-xl font-extrabold text-xl shadow-2xl hover:bg-gray-100 transition-all transform hover:scale-105 inline-block">
-                Bora começar?
-            </a>
-        </div>
+        <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">Fluxograma de Parentalidade</h1>
+        <p class="text-gray-500 mt-2 font-light tracking-tight">Cronogramas e gatilhos de comunicação atualizados com links de acesso.</p>
     </header>
 
-    <main class="max-w-6xl mx-auto p-6 space-y-32 my-20">
+    <div class="flow-container pb-20">
+        <div class="flow-line"></div>
 
-        <!-- Introdução -->
-        <section id="intro" class="scroll-mt-24 text-center max-w-3xl mx-auto">
-            <h3 class="text-3xl font-black mb-6 italic text-slate-800">"Pai não dá uma mãozinha, pai coloca a mão na massa."</h3>
-            <p class="text-lg text-slate-600 leading-relaxed">
-                Este treinamento foi criado para ser rápido, eficiente e direto, do jeito que a gente gosta. Vamos passar por 4 módulos e um quiz final para registrar sua jornada.
-            </p>
-        </section>
-
-        <!-- Módulo 1 -->
-        <section id="modulo1" class="scroll-mt-24 grid md:grid-cols-2 gap-12 items-center">
-            <div class="order-2 md:order-1">
-                <span class="bg-red-100 text-[#ea1d2c] px-4 py-1 rounded-lg text-sm font-black uppercase tracking-widest">Módulo 1</span>
-                <h3 class="text-4xl font-extrabold mt-4 mb-6">Paternidade Ativa no App da Vida 🧠</h3>
-                <p class="text-lg text-slate-600 mb-6">
-                    O vínculo começa antes do nascimento. Estar presente emocionalmente e fisicamente faz toda a diferença para o bebê e para a parceira.
-                </p>
-                <div class="space-y-4">
-                    <div class="flex items-center p-5 bg-white rounded-2xl shadow-sm border-l-8 border-[#ea1d2c]">
-                        <div class="bg-red-50 p-3 rounded-full mr-4 text-[#ea1d2c]">
-                            <i class="fas fa-brain text-xl"></i>
-                        </div>
-                        <p><strong>Carga Mental:</strong> Antecipe as necessidades, estude sobre bebês e tome a iniciativa.</p>
-                    </div>
-                    <div class="flex items-center p-5 bg-white rounded-2xl shadow-sm border-l-8 border-slate-800">
-                        <div class="bg-slate-100 p-3 rounded-full mr-4 text-slate-800">
-                            <i class="fas fa-home text-xl"></i>
-                        </div>
-                        <p><strong>Divisão Real:</strong> Limpar, cozinhar e organizar são formas de cuidado paternal.</p>
-                    </div>
-                </div>
+        <!-- TEMPO DE ACOLHER (ROSA FECHADO) -->
+        <section class="mb-24">
+            <div class="flex items-center justify-center mb-10">
+                <span class="bg-rose-100 text-rose-700 px-6 py-2 rounded-full font-bold uppercase tracking-widest text-xs border border-rose-200 shadow-sm z-10">Tempo de Acolher</span>
             </div>
-            <div class="order-1 md:order-2">
-                <div class="illustration-container shadow-2xl border-4 border-white">
-                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto max-w-[300px]">
-                        <circle cx="100" cy="100" r="90" fill="#fff" stroke="#eee" stroke-width="2"/>
-                        <path d="M70,150 Q100,60 130,150" fill="none" stroke="#ea1d2c" stroke-width="8" stroke-linecap="round"/>
-                        <circle cx="100" cy="65" r="20" fill="#333"/>
-                        <rect x="85" y="110" width="30" height="40" rx="15" fill="#ea1d2c"/>
-                        <circle cx="100" cy="100" r="12" fill="#999"/>
-                        <path d="M90,105 Q100,115 110,105" fill="none" stroke="#fff" stroke-width="2"/>
-                    </svg>
-                </div>
-                <p class="text-xs text-slate-400 mt-4 text-center italic">[Desenho de um pai e um bebê em estilo minimalista]</p>
-            </div>
-        </section>
 
-        <!-- Módulo 2 -->
-        <section id="modulo2" class="scroll-mt-24 bg-slate-900 text-white p-12 rounded-[2.5rem] shadow-2xl">
-            <div class="max-w-4xl mx-auto">
-                <span class="bg-[#ea1d2c] text-white px-4 py-1 rounded-lg text-sm font-black uppercase tracking-widest">Módulo 2</span>
-                <h3 class="text-4xl font-extrabold mt-4 mb-6">Smart Check-up iFood 🩺</h3>
-                <p class="text-lg opacity-80 mb-6 leading-relaxed">
-                    O <strong>Smart Check-up</strong> é o nosso programa inovador de bem-estar, focado total em prevenção. Ele é personalizado, baseado em ciência e disponível para todos os FoodLovers e seus dependentes legais.
-                </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-10 relative">
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-                    <div class="bg-white/5 p-6 rounded-2xl border border-white/10">
-                        <div class="flex items-center mb-3">
-                            <span class="bg-[#ea1d2c] w-8 h-8 rounded-full flex items-center justify-center font-bold mr-3">1</span>
-                            <h4 class="font-bold text-lg">Questionário</h4>
+                <div class="flex justify-end">
+                    <div class="node-card phase-acolher p-5 rounded-2xl w-full md:w-80">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[10px] font-extrabold text-rose-700 uppercase italic">Ato da Inscrição</span>
                         </div>
-                        <p class="text-sm opacity-70">Responda sobre sono, alimentação, atividade física e saúde mental.</p>
-                    </div>
-                    <div class="bg-white/5 p-6 rounded-2xl border border-white/10">
-                        <div class="flex items-center mb-3">
-                            <span class="bg-[#ea1d2c] w-8 h-8 rounded-full flex items-center justify-center font-bold mr-3">2</span>
-                            <h4 class="font-bold text-lg">Exames</h4>
-                        </div>
-                        <p class="text-sm opacity-70">A Mar Saúde solicita exames personalizados com base no seu perfil.</p>
-                    </div>
-                    <div class="bg-white/5 p-6 rounded-2xl border border-white/10">
-                        <div class="flex items-center mb-3">
-                            <span class="bg-[#ea1d2c] w-8 h-8 rounded-full flex items-center justify-center font-bold mr-3">3</span>
-                            <h4 class="font-bold text-lg">Relatório</h4>
-                        </div>
-                        <p class="text-sm opacity-70">Receba um relatório completo com riscos e recomendações de próximos passos.</p>
-                    </div>
-                    <div class="bg-white/5 p-6 rounded-2xl border border-white/10">
-                        <div class="flex items-center mb-3">
-                            <span class="bg-[#ea1d2c] w-8 h-8 rounded-full flex items-center justify-center font-bold mr-3">4</span>
-                            <h4 class="font-bold text-lg">Acompanhamento</h4>
-                        </div>
-                        <p class="text-sm opacity-70">O iDoc acompanha sua jornada com total privacidade dos seus dados.</p>
+                        <h3 class="font-bold text-gray-800">Inscrição no Programa</h3>
+                        <p class="text-[11px] text-gray-500 mt-2">Recebe mensagem com link do site no ato da inscrição.</p>
+                        <a href="https://liviapaula-ux.github.io/Portal-Ifamily/" target="_blank" class="mt-4 block bg-rose-700 text-white text-[10px] py-2 rounded-lg text-center font-bold uppercase">Acessar Site iFamily</a>
                     </div>
                 </div>
 
-                <div class="text-center">
-                    <a href="http://cuidar.marsaude.net/" target="_blank" class="inline-block bg-[#ea1d2c] text-white px-10 py-4 rounded-xl font-black text-lg hover:bg-red-700 transition shadow-xl">
-                        INICIAR MEU SMART CHECK-UP <i class="fas fa-external-link-alt ml-2"></i>
-                    </a>
-                    <p class="text-xs opacity-50 mt-4 italic">Foco em te empoderar para tomar melhores decisões sobre sua saúde.</p>
+                <div class="flex justify-start">
+                    <div class="node-card phase-acolher p-5 rounded-2xl w-full md:w-80 shadow-sm border-2 border-rose-50">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-[10px] font-extrabold text-rose-700 uppercase italic">Combo de Mensagens</span>
+                            <i class="fa-solid fa-gift gift-pulse text-red-500"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800">Mensagens de Inscrição</h3>
+                        <p class="text-[10px] text-gray-400">Gatilhos ativados no ato da inscrição com todos os links.</p>
+                        <button @click="openMsg('Bem-vindos e bem-vindas ao iFamily! 👶', 'Fala, FoodLover!<br><br>O iFamily é o nosso programa de parentalidade que está aqui para apoiar você nessa jornada especial.<br><br><strong>Primeiros passos para começar:</strong><br><br><strong>1. Conheça o programa</strong><br>Acesse nosso site e descubra tudo o que o iFamily pode oferecer para você: <a href=\'https://ifamily2-0.vercel.app/#mural\' target=\'_blank\' class=\'text-red-500 font-bold underline\'>https://ifamily2-0.vercel.app/#mural</a><br><br><strong>2. Mapeamento de saúde</strong><br>Precisamos conhecer um pouco mais sobre a saúde da pessoa gestante (seja você ou sua parceira/parceiro). Preencha este formulário: <a href=\'https://script.google.com/a/macros/ifood.com.br/s/AKfycbyUv3TwLCjOHfQWONTp9Bit6_tcLe9M2xZo4Wvb6JN5bJm82KyauZpy8V_bJokjCL4-vg/exec\' target=\'_blank\' class=\'text-red-500 font-bold underline\'>Acesse aqui</a><br><br><strong>3. Acolhimento inicial</strong><br>Em até 30 dias, nossa mentora de carreira entrará em contato para apresentar todas as possibilidades do programa.<br><br><strong>4. Garanta sua isenção</strong><br>Gestantes têm direito à isenção dos descontos de coparticipação no plano de saúde. Solicite preenchendo este formulário: <a href=\'https://survey.lockton.com.br/surveyanswer/4SFXFtjvLSXLDjffbOtKB3uMkhw8e4I9?culture=pt-BR\' target=\'_blank\' class=\'text-red-500 font-bold underline\'>Formulário de Isenção</a><br><br>Qualquer dúvida, estamos aqui para ajudar! Vamos juntos e juntas nessa jornada?')" class="mt-4 bg-gray-900 text-white text-[10px] px-3 py-2 rounded-lg font-bold w-full">
+                            <i class="fa-solid fa-layer-group mr-1"></i> VER MENSAGENS POR TEMA
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-span-full flex flex-col items-center gap-4 mt-6">
+                    <div class="node-card phase-acolher p-5 rounded-2xl w-full md:w-96 shadow-md">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-[9px] font-bold italic">INSCRIÇÃO + 5 DIAS</span>
+                            <i class="fa-solid fa-briefcase text-gray-300"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800 text-center">Envolvimento da Liderança</h3>
+                        <p class="text-xs text-center text-gray-500 mt-2">O líder recebe as orientações para o acolhimento.</p>
+                        <button @click="openMsg('Mensagem ao Líder', 'Caro Líder, um membro do seu time acaba de se inscrever no Programa de Parentalidade iFood. Este é um momento único! Preparamos orientações para que você possa acolher e apoiar o FoodLover da melhor forma possível.<br><br>Clique aqui e acompanhe o nosso conteúdo exclusivo: <a href=\'https://ifamily2-0.vercel.app/#mural\' target=\'_blank\' class=\'text-red-500 font-bold underline\'>https://ifamily2-0.vercel.app/#mural</a>')" class="mt-4 border border-rose-700 text-rose-700 py-2 rounded-lg w-full font-bold text-[10px] uppercase">VER MENSAGEM DO LÍDER</button>
+                    </div>
+                    <div class="bg-gray-100 px-4 py-2 rounded-full text-[10px] font-bold text-gray-400 italic">Companheiros: Trilha para Pais disponível no ato da inscrição</div>
                 </div>
             </div>
         </section>
 
-        <!-- Módulo 3 -->
-        <section id="modulo3" class="scroll-mt-24 grid md:grid-cols-2 gap-12 items-center">
-            <div class="illustration-container bg-white shadow-lg border border-gray-100">
-                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto max-w-[300px]">
-                    <rect x="40" y="140" width="120" height="10" rx="5" fill="#333"/>
-                    <path d="M60,140 L60,80 Q60,60 80,60 L120,60 Q140,60 140,80 L140,140" fill="none" stroke="#ea1d2c" stroke-width="5"/>
-                    <rect x="75" y="90" width="50" height="40" rx="5" fill="#f1f1f1" stroke="#ea1d2c" stroke-width="2"/>
-                    <line x1="85" y1="105" x2="115" y2="105" stroke="#ea1d2c" stroke-width="2"/>
-                    <line x1="85" y1="115" x2="105" y2="115" stroke="#ea1d2c" stroke-width="2"/>
-                    <circle cx="100" cy="40" r="15" fill="#333"/>
-                    <circle cx="155" cy="115" r="12" fill="#ea1d2c"/>
-                </svg>
-            </div>
-            <div>
-                <span class="bg-red-100 text-[#ea1d2c] px-4 py-1 rounded-lg text-sm font-black uppercase tracking-widest">Módulo 3</span>
-                <h3 class="text-4xl font-extrabold mt-4 mb-6">Direitos e Apoio iFood ⚖️</h3>
-                <p class="text-lg text-slate-600 mb-8">
-                    Conhecer seus direitos garante que você possa exercer sua paternidade plenamente.
-                </p>
-                <ul class="space-y-6">
-                    <li class="flex items-start">
-                        <div class="bg-[#ea1d2c] text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold mr-4 shrink-0 shadow-lg">
-                            <i class="fas fa-hospital-user"></i>
-                        </div>
-                        <div>
-                            <h5 class="font-bold text-xl">Lei do Acompanhante</h5>
-                            <p class="text-slate-600">Direito garantido de acompanhar pré-parto, parto e pós-parto imediato em qualquer unidade de saúde.</p>
-                        </div>
-                    </li>
-                    <li class="flex items-start">
-                        <div class="bg-slate-800 text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold mr-4 shrink-0 shadow-lg">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div>
-                            <h5 class="font-bold text-xl">Licença Paternidade</h5>
-                            <p class="text-slate-600">Consulte nossa política interna no portal do colaborador para saber mais sobre o seu benefício específico aqui no iFood!</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Módulo 4 -->
-        <section id="modulo4" class="scroll-mt-24 bg-white p-12 rounded-[3rem] border-2 border-slate-100 shadow-sm">
-            <div class="text-center max-w-3xl mx-auto mb-12">
-                <span class="bg-slate-100 text-slate-800 px-4 py-1 rounded-lg text-sm font-black uppercase tracking-widest">Módulo 4</span>
-                <h3 class="text-4xl font-extrabold mt-4 mb-4">Manual de Sobrevivência (e Carinho) 🍼</h3>
-                <p class="text-slate-600 text-lg italic">Dominando as tarefas do dia a dia.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="p-8 bg-gray-50 rounded-3xl text-center card-hover">
-                    <div class="text-4xl mb-6 bg-white w-20 h-20 rounded-full flex items-center justify-center mx-auto shadow-sm">🛁</div>
-                    <h5 class="font-bold text-xl mb-3">O Banho</h5>
-                    <p class="text-sm text-slate-500 leading-relaxed">Paciência e segurança. O banho é um momento de relaxamento e troca de olhares com o seu pequeno.</p>
-                </div>
-                <div class="p-8 bg-gray-50 rounded-3xl text-center card-hover border-t-4 border-[#ea1d2c]">
-                    <div class="text-4xl mb-6 bg-white w-20 h-20 rounded-full flex items-center justify-center mx-auto shadow-sm">✨</div>
-                    <h5 class="font-bold text-xl mb-3">Fraldas e Higiene</h5>
-                    <p class="text-sm text-slate-500 leading-relaxed">Seja ágil e carinhoso. É no cuidado básico que a confiança entre pai e filho se constrói.</p>
-                </div>
-                <div class="p-8 bg-gray-50 rounded-3xl text-center card-hover">
-                    <div class="text-4xl mb-6 bg-white w-20 h-20 rounded-full flex items-center justify-center mx-auto shadow-sm">🤱</div>
-                    <h5 class="font-bold text-xl mb-3">Rede de Apoio</h5>
-                    <p class="text-sm text-slate-500 leading-relaxed">Garanta que a mãe esteja confortável. Traga água, comida e cuide do ambiente enquanto ela amamenta.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Quiz Section -->
-        <section id="quiz-section" class="scroll-mt-24 bg-white p-12 rounded-[3rem] shadow-2xl border border-red-50">
-            <div id="quiz-intro" class="text-center">
-                <div class="text-[#ea1d2c] text-5xl mb-6">🏁</div>
-                <h3 class="text-4xl font-black mb-6 uppercase italic text-slate-900">Check-out do Conhecimento</h3>
-                <p class="text-slate-600 mb-10 max-w-xl mx-auto font-medium">
-                    Vamos validar sua jornada? Responda rápido e libere seu registro de participação!
-                </p>
-                <button onclick="startQuiz()" class="bg-[#ea1d2c] text-white px-12 py-5 rounded-2xl font-black text-xl shadow-xl hover:bg-red-700 transition transform hover:scale-105">
-                    Começar Quiz
-                </button>
+        <!-- TEMPO DE PLANEJAR (VERMELHO VIVO) -->
+        <section class="mb-24">
+            <div class="flex items-center justify-center mb-10">
+                <span class="bg-red-100 text-red-700 px-6 py-2 rounded-full font-bold uppercase tracking-widest text-xs border border-red-200 shadow-sm z-10">Tempo de Planejar</span>
             </div>
 
-            <div id="quiz-container" class="hidden max-w-2xl mx-auto">
-                <div id="question-box" class="space-y-8">
-                    <div class="flex justify-between items-center mb-4">
-                        <span id="question-number" class="text-[#ea1d2c] font-black text-lg">Questão 1 de 3</span>
-                    </div>
-                    <h4 id="question-text" class="text-2xl font-bold text-slate-800">Pergunta aqui?</h4>
-                    <div id="options-container" class="grid grid-cols-1 gap-4"></div>
-                    <div id="quiz-feedback" class="hidden p-5 rounded-2xl text-center font-bold"></div>
-                    <button id="next-btn" onclick="nextQuestion()" class="hidden w-full bg-slate-900 text-white py-5 rounded-2xl font-black hover:bg-black transition shadow-lg">PRÓXIMA ETAPA</button>
-                </div>
-            </div>
-
-            <div id="quiz-success" class="hidden text-center space-y-8">
-                <div class="text-8xl animate-bounce">🏆</div>
-                <h3 class="text-4xl font-black text-slate-900 italic">VOCÊ É UM PAI PRESENTE!</h3>
-                <p class="text-slate-600 text-lg">Sucesso no quiz! Agora registre seu nome para finalizarmos.</p>
-                <button onclick="scrollToSection('form-section')" class="bg-[#ea1d2c] text-white px-8 py-3 rounded-full font-bold">Registrar Conclusão</button>
-            </div>
-        </section>
-
-        <!-- Form Section -->
-        <section id="form-section" class="scroll-mt-24 hidden-section">
-            <div class="bg-gray-100 p-12 rounded-[3rem] max-w-4xl mx-auto shadow-sm border border-gray-200">
-                <div class="text-center mb-10">
-                    <h3 class="text-3xl font-black mb-4">Obrigado pela Entrega! 🛵❤️</h3>
-                    <p class="text-slate-600">Preencha seus dados para entrar na nossa lista de Pais Presentes.</p>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-10">
                 
-                <form id="course-form" class="space-y-6">
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-xs font-black text-slate-500 mb-2 uppercase tracking-widest">Nome Completo</label>
-                            <input type="text" id="user-name" required placeholder="Seu nome" 
-                                   class="w-full p-5 rounded-2xl border-2 border-transparent focus:border-[#ea1d2c] focus:outline-none shadow-sm bg-white font-medium">
+                <div class="flex justify-end">
+                    <div class="node-card phase-planejar p-5 rounded-2xl w-full md:w-80 shadow-md">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-[9px] font-extrabold text-red-600 uppercase italic">Fim do 1º Trimestre</span>
+                            <i class="fa-solid fa-gift gift-pulse text-red-500"></i>
                         </div>
-                        <div>
-                            <label class="block text-xs font-black text-slate-500 mb-2 uppercase tracking-widest">E-mail iFood</label>
-                            <input type="email" id="user-email" required placeholder="seuemail@ifood.com.br"
-                                   class="w-full p-5 rounded-2xl border-2 border-transparent focus:border-[#ea1d2c] focus:outline-none shadow-sm bg-white font-medium">
-                        </div>
+                        <h3 class="font-bold text-gray-800 italic">Gatilho: Kit Mamãe</h3>
+                        <p class="text-[11px] text-gray-500 mt-2">Mensagem enviada ao concluir as etapas de acolhimento.</p>
+                        <button @click="openMsg('Entrega Kit Mamãe', 'Parabéns! Você concluiu a primeira fase. Estamos enviando o seu Kit Mamãe! Segue o seu código de rastreio: [CÓDIGO]. Esperamos que aproveite este mimo!')" class="mt-4 bg-red-600 text-white text-[10px] py-2 rounded-lg font-bold w-full">VER RASTREIO / MENSAGEM</button>
                     </div>
-                    
-                    <button type="submit" id="submit-btn" class="w-full bg-[#ea1d2c] text-white py-6 rounded-[2rem] font-black text-2xl shadow-xl hover:bg-red-700 transition-all transform hover:scale-[1.02] active:scale-95">
-                        REGISTRAR AGORA
-                    </button>
-                </form>
+                </div>
 
-                <div id="form-message" class="hidden mt-8 p-6 rounded-3xl text-center font-bold"></div>
+                <div class="flex justify-start">
+                    <div class="node-card phase-planejar p-5 rounded-2xl w-full md:w-80">
+                        <span class="text-[9px] font-extrabold text-red-600 uppercase italic">12ª a 15ª Semana</span>
+                        <h3 class="font-bold text-gray-800">Próximos Passos</h3>
+                        <ul class="text-[10px] mt-3 space-y-2 text-gray-600 italic">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-red-500"></i> Sessão de Mentoria</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-red-500"></i> Novo Mapeamento de Saúde</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-red-500"></i> Roda de conversa para pais</li>
+                        </ul>
+                        <button @click="openMsg('Convite: Planejamento', 'FoodLover, agora entramos no Tempo de Planejar. Convidamos você a preencher o novo mapeamento de saúde (<a href=\'https://script.google.com/a/macros/ifood.com.br/s/AKfycbw4Tu4pEvsSn3eP4EIwOVbLPjEGl_HHltZDeFsYnfmoWsnVMKyrSAWa4jPjkDdlti-r/exec\' target=\'_blank\' class=\'font-bold underline\'>Acesse aqui</a>) e participar das rodas de conversa. Esses momentos são fundamentais para o suporte desta fase!')" class="mt-4 text-red-600 text-[10px] font-bold italic underline">LER CONVITE GERAL</button>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <div class="node-card phase-planejar p-5 rounded-2xl w-full md:w-80">
+                        <span class="text-[9px] font-extrabold text-red-600 uppercase italic">15ª Semana</span>
+                        <h3 class="font-bold text-gray-800">Playbook para Pais</h3>
+                        <button @click="openMsg('Convite Playbook', 'Hora de mergulhar no conhecimento! Sua 15ª semana chegou e com ela o Playbook exclusivo iFood. Criamos este guia para que você consuma as melhores práticas de preparação para a licença.<br><br>Clique aqui e acesse o guia: <a href=\'https://liviapaula-ux.github.io/novocursoparapais/\' target=\'_blank\' class=\'text-red-500 font-bold underline\'>https://liviapaula-ux.github.io/novocursoparapais/</a>')" class="mt-3 bg-red-100 text-red-700 text-[10px] py-2 rounded-lg font-bold w-full">VER MENSAGEM</button>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="node-card phase-planejar p-5 rounded-2xl w-full md:w-80 border-dashed border-gray-200">
+                        <span class="text-[9px] font-extrabold text-gray-400 uppercase italic">20ª Semana</span>
+                        <h3 class="font-bold text-gray-700 italic">Letramento Liderança</h3>
+                        <button @click="openMsg('Mensagem Liderança 20S', 'Líder, seu FoodLover está na 20ª semana! Convidamos você a consumir o conteúdo de letramento para preparar a saída para licença com foco em segurança psicológica e planejamento operacional.')" class="mt-3 border border-gray-300 text-gray-400 text-[10px] py-2 rounded-lg font-bold w-full">MENSAGEM AO LÍDER</button>
+                    </div>
+                </div>
             </div>
         </section>
 
-    </main>
-
-    <footer class="bg-black text-white py-20 px-6">
-        <div class="max-w-6xl mx-auto text-center">
-            <div class="text-3xl font-black mb-8 italic">iFood <span class="text-gray-400 not-italic">Pai Presente</span></div>
-            <p class="opacity-50 mb-12 max-w-xl mx-auto leading-relaxed">Cuidado, afeto e presença. Ser pai é a melhor jornada que você pode aceitar. Bom trabalho e aproveite cada segundo!</p>
-            <div class="pt-10 border-t border-white/10 text-[10px] opacity-30 uppercase tracking-[0.2em]">
-                Inspirado no AVASUS - UFRN | Exclusivo para FoodLovers
+        <!-- TEMPO DE CUIDAR (VERMELHO VINHO) -->
+        <section class="mb-24">
+            <div class="flex items-center justify-center mb-10">
+                <span class="bg-[#7F1D1D] bg-opacity-10 text-[#7F1D1D] px-6 py-2 rounded-full font-bold uppercase tracking-widest text-xs border border-[#7F1D1D] border-opacity-20 shadow-sm z-10">Tempo de Cuidar</span>
             </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-10">
+                
+                <div class="col-span-full flex justify-center mb-6 italic">
+                    <div class="bg-[#7F1D1D] text-white px-8 py-3 rounded-2xl shadow-lg flex items-center gap-4">
+                        <i class="fa-solid fa-star text-yellow-300"></i>
+                        <span class="text-sm font-bold uppercase tracking-widest italic">Gatilho Principal: DPP (Data Prevista do Parto)</span>
+                    </div>
+                </div>
+
+                <div class="flex justify-end italic">
+                    <div class="node-card phase-cuidar p-5 rounded-2xl w-full md:w-80 shadow-md">
+                        <span class="text-[9px] font-extrabold text-[#7F1D1D] uppercase italic">Na DPP</span>
+                        <h3 class="font-bold text-gray-800">Combo Nascimento</h3>
+                        <div class="mt-4 space-y-2 italic">
+                            <button @click="openMsg('Ações de Nascimento', 'Parabéns pela chegada do bebê! Agora é o momento de agir no <a href=\'https://beneflex.rh.digital/sign-in\' target=\'_blank\' class=\'font-bold underline\'>Portal de Benefícios</a> para a inclusão no plano de saúde. Também pedimos que preencha o formulário de saúde do bebê (<a href=\'https://script.google.com/a/macros/ifood.com.br/s/AKfycbyI5MewH11qGAWd9kWKoD4gfBjcmn_oxFkb9csixVO3go2eYbEluY_1Qk1BaxxlhwXghQ/exec\' target=\'_blank\' class=\'font-bold underline\'>Acesse aqui</a>), garantindo a isenção de copay até os 2 anos.')" class="bg-[#7F1D1D] bg-opacity-10 text-[#7F1D1D] text-[10px] p-2 rounded-lg w-full font-bold">MENSAGEM: SAÚDE & PLANO</button>
+                            <button @click="openMsg('Licença Paternidade', 'Papai, o bebê chegou! Convidamos você a realizar o agendamento da sua licença paternidade através do fluxo da Alli no ato do nascimento para garantir seu tempo com a família.')" class="bg-[#7F1D1D] bg-opacity-10 text-[#7F1D1D] text-[10px] p-2 rounded-lg w-full font-bold italic">MENSAGEM: LICENÇA PAIS</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="node-card phase-cuidar p-5 rounded-2xl w-full md:w-80 border-dashed border-red-900 border-opacity-20 italic">
+                        <span class="text-[9px] font-extrabold text-gray-400 uppercase italic">Período de Licença</span>
+                        <h3 class="font-bold text-gray-700">+1 ou 2 Mentorias</h3>
+                        <p class="text-[10px] text-gray-500 mt-2 italic">Opcionais para suporte no puerpério.</p>
+                        <button @click="openMsg('Sessão de Mentoria', 'Está na hora de fazer a sua sessão de mentoria e preparo para a saída de licença (apenas para gestantes). Clique aqui para agendar: <a href=\'https://calendar.google.com/calendar/appointments/schedules/AcZssZ0e6ckMQwe1-LEPr0k-OV-p__2tJVmuHZyh0bGsn81pj2hCKrhfgMlsNp62jL93gFLDbVNqEkH3\' target=\'_blank\' class=\'text-red-500 font-bold underline\'>Link do Agendamento</a>')" class="mt-4 bg-[#7F1D1D] bg-opacity-10 text-[#7F1D1D] text-[10px] py-2 rounded-lg font-bold w-full italic uppercase tracking-wider">Ver Orientação</button>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <div class="node-card phase-cuidar p-5 rounded-2xl w-full md:w-80">
+                        <span class="text-[9px] font-extrabold text-[#7F1D1D] uppercase italic">DPP + 150 DIAS</span>
+                        <h3 class="font-bold text-gray-800 italic">Ação do Líder</h3>
+                        <button @click="openMsg('Reonboarding Líder', 'Líder, o retorno do seu FoodLover está próximo (em 30 dias). Convidamos você a iniciar o planejamento do reonboarding para garantir um acolhimento impecável no retorno.')" class="mt-3 bg-gray-900 text-white text-[10px] py-2 rounded-lg font-bold w-full">MENSAGEM AO LÍDER</button>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="node-card phase-cuidar p-5 rounded-2xl w-full md:w-80 bg-red-50">
+                        <span class="text-[9px] font-extrabold text-[#7F1D1D] uppercase italic">DPP + 180 DIAS</span>
+                        <h3 class="font-bold text-gray-900">Acolhimento de Retorno</h3>
+                        <button @click="openMsg('Boas-vindas de Retorno', 'Bem-vinda de volta, FoodLover! Esperamos que esse tempo tenha sido precioso. Estamos felizes com seu retorno e prontos para te acolher nessa nova fase de conciliação entre carreira e família.')" class="mt-3 border border-[#7F1D1D] text-[#7F1D1D] text-[10px] py-2 rounded-lg font-bold w-full">MENSAGEM ACOLHEDORA</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEMPO DE SUSTENTAR (VERMELHO ACOBREADO) -->
+        <section class="mb-24">
+            <div class="flex items-center justify-center mb-10">
+                <span class="bg-orange-100 text-[#9A3412] px-6 py-2 rounded-full font-bold uppercase tracking-widest text-xs border border-orange-200 shadow-sm z-10">Tempo de Sustentar</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-10">
+                
+                <div class="flex justify-end">
+                    <div class="node-card phase-sustentar p-5 rounded-2xl w-full md:w-80 shadow-sm">
+                        <span class="text-[9px] font-extrabold text-[#9A3412] uppercase italic">Retorno + 5 Dias</span>
+                        <h3 class="font-bold text-gray-800">Saúde Pais e Gestantes</h3>
+                        <button @click="openMsg('Saúde Pós-Retorno', 'Olá! Como foram os primeiros dias de volta? Convidamos você a preencher este mapeamento de saúde para que possamos entender sua adaptação. <strong>Pais:</strong> <a href=\'https://script.google.com/a/macros/ifood.com.br/s/AKfycbxmIXmln1NDFRQ3Q50RoidE7y69XZyONMIoWp27QkESfjoVOF_G6VB76He3qZxiplZ0/exec\' target=\'_blank\' class=\'font-bold underline\'>Formulário Pais</a>. <strong>Gestantes:</strong> <a href=\'https://script.google.com/a/macros/ifood.com.br/s/AKfycbxcSFmY-dT511j9kSEIlj9dK4mWO3u8X4jk7FlVTanY6xW8Mx5AhANvtWQqqISI3qPT/exec\' target=\'_blank\' class=\'font-bold underline\'>Formulário Gestantes</a>.')" class="mt-3 bg-[#9A3412] text-white text-[10px] py-2 rounded-lg font-bold w-full italic">LINKS MENSAGEM</button>
+                    </div>
+                </div>
+
+                <div class="flex justify-start italic">
+                    <div class="node-card phase-sustentar p-5 rounded-2xl w-full md:w-80">
+                        <span class="text-[9px] font-extrabold text-[#9A3412] uppercase italic">Retorno + 10 Dias</span>
+                        <h3 class="font-bold text-gray-800 italic">Sessões Finais</h3>
+                        <button @click="openMsg('Mentoria de Encerramento', 'Nossa trilha oficial está chegando ao fim. Convidamos você para as sessões finais de mentoria para amarrar este ciclo incrível e celebrar sua jornada como pai/mãe iFood.')" class="mt-3 border border-[#9A3412] text-[#9A3412] text-[10px] py-2 rounded-lg font-bold w-full">AGENDAR SESSÕES</button>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <div class="node-card phase-sustentar p-5 rounded-2xl w-full md:w-80">
+                        <span class="text-[9px] font-extrabold text-[#9A3412] uppercase italic">Retorno + 120 Dias</span>
+                        <h3 class="font-bold text-gray-800 italic">Acolhimento Social</h3>
+                        <button @click="openMsg('Check-in Social', 'Olá! Faz tempo que você voltou e queríamos saber como está o equilíbrio família/iFood. Nossa assistente social envia esta mensagem acolhedora para marcar o encerramento do acompanhamento dedicado.')" class="mt-3 bg-orange-100 text-[#9A3412] text-[10px] py-2 rounded-lg font-bold w-full">MENSAGEM ACOLHEDORA</button>
+                    </div>
+                </div>
+
+                <div class="flex justify-start">
+                    <div class="node-card phase-sustentar p-5 rounded-2xl w-full md:w-80 bg-zinc-900 border-zinc-700 text-white">
+                        <span class="text-[9px] font-extrabold text-[#9A3412] uppercase italic">Retorno + 180 Dias</span>
+                        <h3 class="font-bold mt-1">Despedida do Programa</h3>
+                        <button @click="openMsg('Resumo & Despedida', 'Uau! Que jornada vivemos juntos. De lá da inscrição até hoje, 6 meses após o retorno, você construiu um novo futuro. Parabéns por concluir o programa com sucesso! Foi um privilégio estar ao seu lado.')" class="mt-4 bg-[#9A3412] text-white text-[10px] py-2 rounded-lg font-bold w-full">MENSAGEM DE DESPEDIDA</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- MODAL DE MENSAGENS -->
+    <div x-show="modalOpen" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div @click="modalOpen = false" x-show="modalOpen" x-transition.opacity class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div x-show="modalOpen" x-transition.scale.90 class="bg-white rounded-[2.5rem] p-8 md:p-12 w-full max-w-lg shadow-2xl relative z-20">
+            <button @click="modalOpen = false" class="absolute top-8 right-8 text-gray-300 hover:text-gray-500 transition">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+            <div class="mb-8">
+                <div class="w-12 h-1 bg-red-500 rounded-full mb-6"></div>
+                <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight" x-html="modalTitle"></h2>
+            </div>
+            <div class="text-gray-600 leading-relaxed text-sm" x-html="modalBody"></div>
+            <div class="mt-10 flex justify-end">
+                <button @click="modalOpen = false" class="bg-gray-900 text-white px-8 py-3 rounded-full font-bold text-[10px] uppercase tracking-widest hover:bg-red-600 transition">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-white border-t border-gray-100 py-16 text-center">
+        <p class="text-xs font-bold text-gray-400 tracking-[0.3em] uppercase mb-4">#GenteVemPrimeiro</p>
+        <div class="flex justify-center gap-8 text-gray-300">
+            <i class="fa-solid fa-heart hover:text-red-500 transition cursor-help"></i>
+            <i class="fa-solid fa-baby hover:text-blue-400 transition cursor-help"></i>
+            <i class="fa-solid fa-house-chimney hover:text-emerald-400 transition cursor-help"></i>
         </div>
     </footer>
 
-    <script>
-        const questions = [
-            {
-                q: "A presença do pai no momento do parto é garantida por lei?",
-                options: ["Sim, apenas se for agendado", "Não, depende do médico", "Sim, é um direito garantido pela Lei do Acompanhante", "Apenas no setor particular"],
-                answer: 2,
-                feedback: "A Lei Federal nº 11.108/2005 garante esse direito no SUS e em hospitais privados!"
-            },
-            {
-                q: "Qual é o principal objetivo do Smart Check-up iFood?",
-                options: ["Apenas realizar exames de sangue genéricos", "Comprar medicamentos com desconto", "Prevenção personalizada e proativa da saúde para FoodLovers e dependentes", "Apenas monitorar o peso"],
-                answer: 2,
-                feedback: "O Smart Check-up foca em identificar riscos precocemente e empoderar você para tomar melhores decisões sobre sua saúde!"
-            },
-            {
-                q: "O que caracteriza a paternidade ativa e consciente?",
-                options: ["Apenas brincar de vez em quando", "Dividir tarefas domésticas e assumir o cuidado emocional", "Dar uma mãozinha quando for solicitado", "Ser o responsável apenas pelo sustento"],
-                answer: 1,
-                feedback: "Paternidade ativa é estar presente em todas as esferas do cuidado, da troca de fraldas ao apoio emocional!"
-            }
-        ];
-
-        let currentQuestion = 0;
-        let score = 0;
-
-        function updateProgress() {
-            const sections = ['modulo1', 'modulo2', 'modulo3', 'modulo4', 'quiz-section'];
-            let currentIdx = 0;
-            const scrollPos = window.scrollY + 400;
-
-            sections.forEach((id, index) => {
-                const el = document.getElementById(id);
-                if (el && scrollPos >= el.offsetTop) currentIdx = index + 1;
-            });
-
-            const percent = Math.min(Math.round((currentIdx / sections.length) * 100), 100);
-            document.getElementById('main-progress').style.width = percent + '%';
-            document.getElementById('progress-text').innerText = percent + '%';
-        }
-
-        window.addEventListener('scroll', updateProgress);
-
-        function scrollToSection(id) {
-            document.getElementById(id).scrollIntoView();
-        }
-
-        function startQuiz() {
-            document.getElementById('quiz-intro').classList.add('hidden');
-            document.getElementById('quiz-container').classList.remove('hidden');
-            showQuestion();
-        }
-
-        function showQuestion() {
-            const q = questions[currentQuestion];
-            document.getElementById('question-number').innerText = `Questão ${currentQuestion + 1} de ${questions.length}`;
-            document.getElementById('question-text').innerText = q.q;
-            
-            const container = document.getElementById('options-container');
-            container.innerHTML = '';
-            
-            q.options.forEach((opt, idx) => {
-                const btn = document.createElement('button');
-                btn.className = "quiz-option p-5 rounded-2xl border-2 border-slate-200 text-left font-semibold hover:border-[#ea1d2c] transition text-slate-700 bg-white shadow-sm";
-                btn.innerText = opt;
-                btn.onclick = () => selectOption(idx, btn);
-                container.appendChild(btn);
-            });
-
-            document.getElementById('next-btn').classList.add('hidden');
-            document.getElementById('quiz-feedback').classList.add('hidden');
-        }
-
-        function selectOption(idx, btn) {
-            const q = questions[currentQuestion];
-            const feedback = document.getElementById('quiz-feedback');
-            const options = document.querySelectorAll('.quiz-option');
-            
-            options.forEach(o => o.disabled = true);
-            
-            if(idx === q.answer) {
-                btn.classList.add('bg-green-50', 'border-green-500', 'text-green-800');
-                feedback.innerText = "Correto! " + q.feedback;
-                feedback.className = "p-5 rounded-2xl text-center font-bold bg-green-50 text-green-700 block shadow-inner";
-                score++;
-            } else {
-                btn.classList.add('bg-red-50', 'border-red-500', 'text-red-800');
-                feedback.innerText = "Ops! O correto era: " + q.options[q.answer];
-                feedback.className = "p-5 rounded-2xl text-center font-bold bg-red-50 text-red-700 block shadow-inner";
-            }
-
-            document.getElementById('next-btn').classList.remove('hidden');
-        }
-
-        function nextQuestion() {
-            currentQuestion++;
-            if(currentQuestion < questions.length) {
-                showQuestion();
-            } else {
-                showQuizResult();
-            }
-        }
-
-        function showQuizResult() {
-            document.getElementById('quiz-container').classList.add('hidden');
-            if(score >= 2) {
-                document.getElementById('quiz-success').classList.remove('hidden');
-                document.getElementById('form-section').classList.remove('hidden-section');
-                document.getElementById('main-progress').style.width = '100%';
-                document.getElementById('progress-text').innerText = '100%';
-            } else {
-                alert("Você acertou " + score + " de 3. Releia os módulos e tente novamente!");
-                currentQuestion = 0; score = 0;
-                document.getElementById('quiz-intro').classList.remove('hidden');
-            }
-        }
-
-        document.getElementById('course-form').onsubmit = async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submit-btn');
-            const msg = document.getElementById('form-message');
-            
-            btn.disabled = true;
-            btn.innerText = "REGISTRANDO...";
-
-            const data = {
-                nome: document.getElementById('user-name').value,
-                email: document.getElementById('user-email').value,
-                timestamp: new Date().toLocaleString(),
-                score: score
-            };
-
-            // Simulação de envio para Planilha (Configurar endpoint aqui se necessário)
-            setTimeout(() => {
-                msg.innerText = "Boa, " + data.nome.split(' ')[0] + "! Seu progresso foi registrado com sucesso. 🚀";
-                msg.className = "mt-8 p-6 rounded-3xl text-center font-bold bg-green-100 text-green-800 block border-2 border-green-200";
-                btn.innerText = "CONCLUÍDO COM SUCESSO! ✅";
-                console.log("Payload para a planilha:", data);
-            }, 1200);
-        };
-    </script>
 </body>
 </html>
